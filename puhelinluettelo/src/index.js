@@ -4,11 +4,15 @@ import App from './App';
 const contacts = [
     {
       id: 1,
-      name: 'Jonas Engberg',
+      name: 'Arto Hellas',
+      number: '040-123456',
+      important: true
     },
     {
       id: 2,
-      name: 'Niklas Pimenoff',
+      name: 'Rami Järvinen',
+      number: '040-123456',
+      important: false
     }
   ]
 ReactDOM.render(<App contacts={contacts}/>, document.getElementById('root'));
