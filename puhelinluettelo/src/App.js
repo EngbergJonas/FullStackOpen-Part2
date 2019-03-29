@@ -1,25 +1,18 @@
 import React, { useState } from 'react'
 import Contacts from './components/Contacts'
+import Filter from './components/Filter'
+import ContactForm from './components/ContactForm'
 
 const App = (props) => {
   const [persons, setPersons] = useState(props.contacts) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
-  const [filter, setFilter] = useState('')
+  const [setFilter, setNewFilter] = useState('')
 
-  const contactsToShow = filter 
-  ? persons 
-  : persons.filter(person => person.name.filter)
-
-  const rows = () => contactsToShow.map(contact =>
-    <Contacts 
-    key={contact.id}
-    contact={contact}
-    />
-  )
-
-  const getName = (array) => (
-    array.map(item => (item.name))
+  const filterResult = persons.filter(
+    person => person.name.toLowerCase().includes(
+      setFilter.toLowerCase()
+    )
   )
 
   const addContact = (event) => {
@@ -29,12 +22,16 @@ const App = (props) => {
       name: newName,
       number: newNumber
     }
-    if(!(getName(persons).indexOf(newName))){
-      return(alert(`${newName} on jo olemassa!`))
+    //Include(true) checks if the persons array returns an index as true
+    if(persons.map(person => 
+      person.name.toLowerCase() === newName.toLowerCase()).includes(true)){
+      alert(`${newName} on jo olemassa!`)
     }
-    setPersons(persons.concat(contactObject))
-    setNewName('')
-    setNewNumber('')
+    else{
+      setPersons(persons.concat(contactObject))
+      setNewName('')
+      setNewNumber('')
+    }
   }
 
   const handleNameChange = (event) => {
@@ -46,43 +43,17 @@ const App = (props) => {
   }
 
   const handleFilter = (event) => {
-    setFilter(event.target.value)
-    console.log(filter)
+    setNewFilter(event.target.value)
   }
+
   return (
     <div>
       <h2>Puhelinluettelo</h2>
-      <form onSubmit={addContact}>
-        <div>
-          Rajaa näytettäviä: 
-          <input 
-          value={filter}
-          onChange={handleFilter}
-          />
-        </div>
-        <h3>Lisää uusi</h3>
-        <div>
-          Nimi: 
-          <input 
-          value={newName}
-          onChange={handleNameChange}
-          />
-        </div>
-        <div>
-          Numero: 
-          <input 
-          value={newNumber}
-          onChange={handleNumberChange}
-          />
-        </div>
-        <div>
-        <button type="submit">lisää</button>
-        </div>
-      </form>
+      <Filter filter={setFilter} eventHandler={handleFilter}/>
+      <ContactForm add={addContact} name={newName} nameHandler={handleNameChange} 
+      number={newNumber} numberHandler={handleNumberChange}/>
       <h2>Numerot</h2>
-      <ul>
-        {rows()}
-      </ul>
+      <Contacts result={filterResult} />
     </div>
   )
 

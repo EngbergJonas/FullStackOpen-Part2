@@ -6,13 +6,11 @@ const contacts = [
       id: 1,
       name: 'Arto Hellas',
       number: '040-123456',
-      important: true
     },
     {
       id: 2,
       name: 'Rami Järvinen',
-      number: '040-123456',
-      important: false
+      number: '040-123456'
     }
   ]
 ReactDOM.render(<App contacts={contacts}/>, document.getElementById('root'));
