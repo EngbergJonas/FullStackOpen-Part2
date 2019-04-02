@@ -1,10 +1,18 @@
 import React from "react";
 
-const Countries = ({ result }) => {
+const Button = ({ result, newResult }) => {
+  return <button onClick={() => newResult(result.name)}>Show</button>;
+};
+
+const Countries = ({ result, newResult }) => {
   if (result.length > 10) {
     return <p>Too many matches, specify another filter</p>;
   } else if (result.length > 1) {
-    return result.map(country => <li key={country.name}>{country.name}</li>);
+    return result.map(country => (
+      <li key={country.name}>
+        {country.name} <Button result={country} newResult={newResult} />
+      </li>
+    ));
   }
   return result.map(country => (
     <div key="country">

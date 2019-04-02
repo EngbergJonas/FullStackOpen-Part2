@@ -9,6 +9,7 @@ const App = () => {
   const [weather, setWeather] = useState([]);
   const [setFilter, setNewFilter] = useState("");
 
+  //Api key should be hidden, working progress
   const apiKey = "0476777031464da0a01105155190204";
 
   const filterResult = countries.filter(country =>
@@ -52,7 +53,7 @@ const App = () => {
     <div>
       <h1>Maiden tiedot</h1>
       <Filter filter={setFilter} eventHandler={handleFilter} />
-      <Countries result={filterResult} />
+      <Countries result={filterResult} newResult={setNewFilter} />
       <Weather result={weather} countryResult={filterResult} />
     </div>
   );
