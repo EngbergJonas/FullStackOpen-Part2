@@ -1,14 +1,19 @@
 {
-"contacts": [
-        {
-          "id": 1,
-          "name": "Arto Hellas",
-          "number": "040-123456"
-        },
-        {
-          "id": 2,
-          "name": "Rami Järvinen",
-          "number": "040-123456"
-        }
-      ]
+  "contacts": [
+    {
+      "name": "James Bond",
+      "number": "040-1234567",
+      "id": 1
+    },
+    {
+      "name": "Michael Myers",
+      "number": "050-123598",
+      "id": 2
+    },
+    {
+      "name": "Arto Hellas",
+      "number": "040-1234567",
+      "id": 3
+    }
+  ]
 }

@@ -1,8 +1,10 @@
-import React from 'react'
+import React from "react";
 
-const Contacts = ({result}) => (
-    result.map(contact =>
-      <li key={contact.id}>{contact.name} - {contact.number}</li>
-    )
-)
-export default Contacts
+const Contacts = ({ result, toggleDelete }) =>
+  result.map(contact => (
+    <li key={contact.id}>
+      {contact.name} - {contact.number}
+      <button onClick={() => toggleDelete(contact.id)}>Delete</button>
+    </li>
+  ));
+export default Contacts;
