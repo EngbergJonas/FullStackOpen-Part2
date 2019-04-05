@@ -10,16 +10,33 @@ const App = () => {
   const [newNumber, setNewNumber] = useState("");
   const [setFilter, setNewFilter] = useState("");
 
+  const filterResult = persons.filter(person =>
+    person.name.toLowerCase().includes(setFilter.toLowerCase())
+  );
+
+  const getConfirm = (name, newNumber) => {
+    const contact = persons.find(contact => contact.name === name);
+    console.log(newNumber)
+    console.log(contact)
+    if (
+      window.confirm(`${name} on jo olemassa, haluatko korvata numeron uudella?`)
+    ) {
+      contactService.modify(contact, newNumber).then(() => {
+        contactService.getAll().then(initialContacts => {
+          setPersons(initialContacts);
+        })
+      })
+    }
+  };
+
+  //GET data
   useEffect(() => {
     contactService.getAll().then(initialContacts => {
       setPersons(initialContacts);
     });
   }, []);
 
-  const filterResult = persons.filter(person =>
-    person.name.toLowerCase().includes(setFilter.toLowerCase())
-  );
-
+  //POST data
   const addContact = event => {
     event.preventDefault();
     const contactObject = {
@@ -31,7 +48,8 @@ const App = () => {
         .map(person => person.name.toLowerCase() === newName.toLowerCase())
         .includes(true)
     ) {
-      alert(`${newName} on jo olemassa!`);
+      //PUT data
+      getConfirm(newName, newNumber);
     } else {
       contactService.create(contactObject).then(returnedContact => {
         setPersons(persons.concat(returnedContact));
@@ -41,13 +59,15 @@ const App = () => {
     }
   };
 
+  //DELETE data
   const toggleDeleteOf = id => {
     const contact = persons.find(contact => contact.id === id);
+    console.log(contact)
     if (window.confirm(`Would you like to remove ${contact.name}`)) {
       contactService.remove(contact).then(() => {
         contactService.getAll().then(initialContacts => {
           setPersons(initialContacts);
-        })
+        });
       });
     }
   };
