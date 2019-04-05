@@ -3,22 +3,8 @@ import Contacts from "./components/Contacts";
 import Filter from "./components/Filter";
 import ContactForm from "./components/ContactForm";
 import contactService from "./services/contacts";
-import Notification from './components/Notification'
-
-const Footer = () => {
-  const footerStyle = {
-    color: "green",
-    fontStyle: "italic",
-    fontSize: 16,
-    paddingBottom: 10
-  };
-  return (
-    <div style={footerStyle}>
-      <br />
-      <em>Phonebook app, Jonas Engberg 2019</em>
-    </div>
-  );
-};
+import Notification from "./components/Notification";
+import Footer from "./components/Footer";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -30,22 +16,6 @@ const App = () => {
   const filterResult = persons.filter(person =>
     person.name.toLowerCase().includes(setFilter.toLowerCase())
   );
-
-  //PUT data
-  const modifyContact = (name, newNumber) => {
-    const contact = persons.find(contact => contact.name === name);
-    if (
-      window.confirm(
-        `${name} on jo olemassa, haluatko korvata numeron uudella?`
-      )
-    ) {
-      contactService.modify(contact, newNumber).then(() => {
-        contactService.getAll().then(initialContacts => {
-          setPersons(initialContacts);
-        });
-      });
-    }
-  };
 
   //GET data
   useEffect(() => {
@@ -85,28 +55,51 @@ const App = () => {
     }
   };
 
+  //PUT data
+  const modifyContact = (name, newNumber) => {
+    const contact = persons.find(contact => contact.name === name);
+    if (
+      window.confirm(
+        `${name} on jo olemassa, haluatko korvata numeron uudella?`
+      )
+    ) {
+      contactService.modify(contact, newNumber).then(() => {
+        contactService.getAll().then(initialContacts => {
+          setPersons(initialContacts);
+        });
+      });
+    }
+  };
+
   //DELETE data
   const toggleDeleteOf = id => {
     const contact = persons.find(contact => contact.id === id);
     console.log(contact);
     if (window.confirm(`Would you like to remove ${contact.name}`)) {
-      contactService.remove(contact).then(() => {
-        setMessage(`${contact.name} on poistettu.`)
-        setTimeout(() => {
-          setMessage(null);
-        }, 5000)
-      }).then(() => {
-        contactService.getAll().then(newContacts => {
-          setPersons(newContacts);
-        });
-      }).catch(error => {
-        setMessage(`${contact.name} on jo poistettu.`)
-        setTimeout(() => {
-          setMessage(null);
-        }, 5000)
-      }).then(contactService.getAll().then(newContacts => {
-        setPersons(newContacts)
-      }))
+      contactService
+        .remove(contact)
+        .then(() => {
+          setMessage(`${contact.name} on poistettu.`);
+          setTimeout(() => {
+            setMessage(null);
+          }, 5000);
+        })
+        .then(() => {
+          contactService.getAll().then(newContacts => {
+            setPersons(newContacts);
+          });
+        })
+        .catch(error => {
+          setMessage(`${contact.name} on jo poistettu.`);
+          setTimeout(() => {
+            setMessage(null);
+          }, 5000);
+        })
+        .then(
+          contactService.getAll().then(newContacts => {
+            setPersons(newContacts);
+          })
+        );
     }
   };
 
