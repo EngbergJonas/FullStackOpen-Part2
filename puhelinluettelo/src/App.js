@@ -46,6 +46,9 @@ const App = () => {
           setNewName("");
           setNewNumber("");
         })
+        .catch(error => {
+          setMessage(`${error.response.data.error}`)
+        })
         .then(
           setMessage(`${newName} lisätty luetteloon`),
           setTimeout(() => {
